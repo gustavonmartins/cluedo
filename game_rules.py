@@ -2,29 +2,34 @@ from dataclasses import dataclass
 
 
 @dataclass
-class CaseFile:
+class MurderEvent:
     room: str
     weapon: str
     suspect: str
+
+
+from enum import Enum
+
+
+class PlayerStatus(Enum):
+    WON = "Won"
+    LOST = "Lost"
+    PLAYING = "Playing"
 
 
 @dataclass
-class Accusation:
-    room: str
-    suspect: str
-    weapon: str
+class Player:
+    def __init__(self, room=None, status=PlayerStatus.PLAYING):
+        self.room = room
+        self.status = status
 
+    def accuse(self, room, suspect, weapon, casefile):
+        accusation = MurderEvent(room, weapon, suspect)
+        if accusation == casefile:
+            self.status = PlayerStatus.WON
+        else:
+            self.status = PlayerStatus.LOST
 
-def accuse(room, suspect, weapon) -> Accusation:
-    return Accusation(room=room, weapon=weapon, suspect=suspect)
-
-
-def check_accusation(accusation, casefile):
-    if (
-        (accusation.room == casefile.room)
-        and (accusation.suspect == casefile.suspect)
-        and (accusation.weapon == casefile.weapon)
-    ):
-        return True
-    else:
-        return False
+    def enter_room(self, room):
+        self.room = room
+        return self
