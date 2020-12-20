@@ -18,7 +18,7 @@ class AccusationStatus(Enum):
 
 
 @dataclass
-class UnruledPlayer:
+class Player:
     """This is basic suggestion/accusation behaviour as in last page of rules.
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
@@ -30,9 +30,14 @@ class UnruledPlayer:
         self.room = room
         self.__hash = uuid4().int
 
-    def accuse(self, room, suspect, weapon, casefile):
+    def accuse(self, room, suspect, weapon):
         accusation = MurderEvent(room, weapon, suspect)
-        if accusation == casefile:
+
+        self.accusation = accusation
+        return self
+
+    def check_accusation(self, casefile):
+        if self.accusation == casefile:
             self.status = AccusationStatus.CORRECT
         else:
             self.status = AccusationStatus.WRONG

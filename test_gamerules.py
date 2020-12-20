@@ -1,18 +1,18 @@
-from game_rules import MurderEvent, AccusationStatus, UnruledPlayer
+from game_rules import MurderEvent, AccusationStatus, Player
 
 
-def test_accusation():
+def test_accuse_from_room():
     """This is the basic rule to define a winner and is done first to prevent depending on too much history"""
 
     casefile = MurderEvent(room="Kitchen", suspect="Rev Green", weapon="Candlestick")
 
-    p1 = UnruledPlayer()
-    p1.accuse("Lounge", "Colonel Mustard", "Rope", casefile)
+    p1 = Player(room="Random room")
+    p1.accuse("Lounge", "Colonel Mustard", "Rope").check_accusation(casefile)
 
     assert p1.status == AccusationStatus.WRONG
 
-    p2 = UnruledPlayer()
-    p2.accuse("Kitchen", "Rev Green", "Candlestick", casefile)
+    p2 = Player()
+    p2.accuse("Kitchen", "Rev Green", "Candlestick").check_accusation(casefile)
 
     assert p2.status == AccusationStatus.CORRECT
 
@@ -25,10 +25,10 @@ def test_suggestion():
     """
 
     p1, p2, p3, p4 = (
-        UnruledPlayer(room="Lounge"),
-        UnruledPlayer(),
-        UnruledPlayer(),
-        UnruledPlayer(),
+        Player(room="Lounge"),
+        Player(),
+        Player(),
+        Player(),
     )
 
     p2.receive_cards(["Kitchen", "Colonel Mustard", "Dagger"])
