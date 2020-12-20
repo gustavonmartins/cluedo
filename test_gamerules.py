@@ -12,7 +12,9 @@ def testset(request):
 
 
 def test_accuse(testset):
-    """Tests winning and loosing accusations"""
+    """Tests winning and loosing accusations.
+
+    Inputs and expected results are read from json json file"""
 
     from_state = testset["from_state"]
     room = testset["room"]
