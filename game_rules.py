@@ -12,13 +12,12 @@ class MurderEvent:
 from enum import Enum
 
 
-class AccusationStatus(str, Enum):
-    CORRECT = "correct"
-    WRONG = "wrong"
+class State(str, Enum):
     ONROOM = "on_room"
     ONCORRIDOR = "on_corridor"
     ILLEGAL = "illegal"
-    WINNER = "winner"
+    WON = "won"
+    LOST = "lost"
 
 
 @dataclass
@@ -27,7 +26,7 @@ class Player:
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
 
-    def __init__(self, state=AccusationStatus.ONCORRIDOR, room=None, cards=[]):
+    def __init__(self, state=State.ONCORRIDOR, room=None, cards=[]):
         self.cards = set(cards)
         self.cards_to_check = {}
         self.last_card_refuted = None
@@ -36,21 +35,21 @@ class Player:
         self.state = state
 
     def accuse(self, room, suspect, weapon):
-        if not (self.state in [AccusationStatus.ONROOM, AccusationStatus.ONCORRIDOR]):
-            self.state = AccusationStatus.ILLEGAL
+        if not (self.state in [State.ONROOM, State.ONCORRIDOR]):
+            self.state = State.ILLEGAL
             return self
 
         self.accusation = MurderEvent(room, weapon, suspect)
         return self
 
     def check_accusation(self, casefile):
-        if self.state == AccusationStatus.ILLEGAL:
-            self.state = AccusationStatus.ILLEGAL
+        if self.state == State.ILLEGAL:
+            self.state = State.ILLEGAL
             return
         if self.accusation == casefile:
-            self.state = AccusationStatus.CORRECT
+            self.state = State.WON
         else:
-            self.state = AccusationStatus.WRONG
+            self.state = State.LOST
 
     def receive_cards(self, cards):
         self.cards.update(cards)

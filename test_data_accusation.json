@@ -4,38 +4,38 @@
     "room": "Lounge",
     "suspect": "Colonel Mustard",
     "weapon": "Rope",
-    "result": "wrong"
+    "result": "lost"
   },
   {
     "from_state": "on_room",
     "room": "Kitchen",
     "suspect": "Rev Green",
     "weapon": "Candlestick",
-    "result": "correct"
+    "result": "won"
   },
   {
     "from_state": "on_corridor",
     "room": "Lounge",
     "suspect": "Colonel Mustard",
     "weapon": "Rope",
-    "result": "wrong"
+    "result": "lost"
   },
   {
     "from_state": "on_corridor",
     "room": "Kitchen",
     "suspect": "Rev Green",
     "weapon": "Candlestick",
-    "result": "correct"
+    "result": "won"
   },
   {
-    "from_state": "wrong",
+    "from_state": "lost",
     "room": "Kitchen",
     "suspect": "Rev Green",
     "weapon": "Candlestick",
     "result": "illegal"
   },
   {
-    "from_state": "winner",
+    "from_state": "won",
     "room": "Kitchen",
     "suspect": "Rev Green",
     "weapon": "Candlestick",

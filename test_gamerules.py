@@ -1,4 +1,4 @@
-from game_rules import MurderEvent, AccusationStatus, Player
+from game_rules import MurderEvent, State, Player
 from pytest import fixture
 from conftest import load_json_data
 
