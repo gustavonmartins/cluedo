@@ -1,22 +1,21 @@
 digraph {
 	rankdir = BL
+	I [label=before]
 	A [label="on corridor"]
 	C [label="on room"]
 	B [color=red, label="suggesting"]
 	D [color=red, label="accusing"]
 	H [label=winner]
 	E [label=looser]
-	F [label="initial position"]
 	A -> A [label="move with dice"]
-    F -> A [label="move with dice"]
     A -> C [label="enter room"]
+    I -> A
     C -> C [label="enter shortcut"]
     C -> B [label="suggest"]
     B -> C [label="confirm suggestion"]
     C -> A [label="leave room"]
     C -> D [label="accuse"]
     A -> D [label="accuse"]
-    F -> D [label="accuse"]
     D -> E [label="wrong accusation", color=orange]
     D -> H [label="correct accusation", color=orange]
 

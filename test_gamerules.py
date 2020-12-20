@@ -1,20 +1,25 @@
 from game_rules import MurderEvent, AccusationStatus, Player
+from pytest import mark
 
 
-def test_accuse_from_room():
-    """This is the basic rule to define a winner and is done first to prevent depending on too much history"""
+@mark.parametrize(
+    "from_room, room, suspect, weapon, result",
+    [
+        ("Kitchen", "Lounge", "Colonel Mustard", "Rope", AccusationStatus.WRONG),
+        (None, "Hall", "Rev Green", "Rope", AccusationStatus.WRONG),
+        ("Bath", "Kitchen", "Rev Green", "Candlestick", AccusationStatus.CORRECT),
+        (None, "Kitchen", "Rev Green", "Candlestick", AccusationStatus.CORRECT),
+    ],
+)
+def test_accuse(from_room, room, suspect, weapon, result):
+    """Tests winning and loosing accusations"""
 
     casefile = MurderEvent(room="Kitchen", suspect="Rev Green", weapon="Candlestick")
 
-    p1 = Player(room="Random room")
-    p1.accuse("Lounge", "Colonel Mustard", "Rope").check_accusation(casefile)
+    p1 = Player(room=from_room)
+    p1.accuse(room, suspect, weapon).check_accusation(casefile)
 
-    assert p1.status == AccusationStatus.WRONG
-
-    p2 = Player()
-    p2.accuse("Kitchen", "Rev Green", "Candlestick").check_accusation(casefile)
-
-    assert p2.status == AccusationStatus.CORRECT
+    assert p1.status == result
 
 
 def test_suggestion():
