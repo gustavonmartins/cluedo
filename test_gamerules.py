@@ -1,49 +1,24 @@
 from game_rules import MurderEvent, AccusationStatus, Player
-from pytest import mark
+from pytest import fixture
+from conftest import load_json_data
 
 
-@mark.parametrize(
-    "from_state, room, suspect, weapon, result",
-    [
-        (
-            AccusationStatus.ONROOM,
-            "Lounge",
-            "Colonel Mustard",
-            "Rope",
-            AccusationStatus.WRONG,
-        ),
-        (
-            AccusationStatus.ONROOM,
-            "Kitchen",
-            "Rev Green",
-            "Candlestick",
-            AccusationStatus.CORRECT,
-        ),
-        (
-            AccusationStatus.ONCORRIDOR,
-            "Lounge",
-            "Colonel Mustard",
-            "Rope",
-            AccusationStatus.WRONG,
-        ),
-        (
-            AccusationStatus.ONCORRIDOR,
-            "Kitchen",
-            "Rev Green",
-            "Candlestick",
-            AccusationStatus.CORRECT,
-        ),
-        (
-            AccusationStatus.WRONG,
-            "Kitchen",
-            "Rev Green",
-            "Candlestick",
-            AccusationStatus.ILLEGAL,
-        ),
-    ],
-)
-def test_accuse(from_state, room, suspect, weapon, result):
+jsonpath = "test_data_accusation.json"
+
+
+@fixture(params=load_json_data(jsonpath))
+def testset(request):
+    return request.param
+
+
+def test_accuse(testset):
     """Tests winning and loosing accusations"""
+
+    from_state = testset["from_state"]
+    room = testset["room"]
+    suspect = testset["suspect"]
+    weapon = testset["weapon"]
+    result = testset["result"]
 
     casefile = MurderEvent(room="Kitchen", suspect="Rev Green", weapon="Candlestick")
 

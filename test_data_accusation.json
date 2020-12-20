@@ -1,0 +1,51 @@
+[
+  {
+    "from_state": "on_room",
+    "room": "Lounge",
+    "suspect": "Colonel Mustard",
+    "weapon": "Rope",
+    "result": "wrong"
+  },
+  {
+    "from_state": "on_room",
+    "room": "Kitchen",
+    "suspect": "Rev Green",
+    "weapon": "Candlestick",
+    "result": "correct"
+  },
+  {
+    "from_state": "on_corridor",
+    "room": "Lounge",
+    "suspect": "Colonel Mustard",
+    "weapon": "Rope",
+    "result": "wrong"
+  },
+  {
+    "from_state": "on_corridor",
+    "room": "Kitchen",
+    "suspect": "Rev Green",
+    "weapon": "Candlestick",
+    "result": "correct"
+  },
+  {
+    "from_state": "wrong",
+    "room": "Kitchen",
+    "suspect": "Rev Green",
+    "weapon": "Candlestick",
+    "result": "illegal"
+  },
+  {
+    "from_state": "winner",
+    "room": "Kitchen",
+    "suspect": "Rev Green",
+    "weapon": "Candlestick",
+    "result": "illegal"
+  },
+  {
+    "from_state": "suggesting",
+    "room": "Kitchen",
+    "suspect": "Rev Green",
+    "weapon": "Candlestick",
+    "result": "illegal"
+  }
+]

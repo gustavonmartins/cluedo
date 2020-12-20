@@ -12,12 +12,13 @@ class MurderEvent:
 from enum import Enum
 
 
-class AccusationStatus(Enum):
+class AccusationStatus(str, Enum):
     CORRECT = "correct"
     WRONG = "wrong"
     ONROOM = "on_room"
     ONCORRIDOR = "on_corridor"
-    ILLEGAL = "illegal move"
+    ILLEGAL = "illegal"
+    WINNER = "winner"
 
 
 @dataclass
@@ -38,9 +39,8 @@ class Player:
         if not (self.state in [AccusationStatus.ONROOM, AccusationStatus.ONCORRIDOR]):
             self.state = AccusationStatus.ILLEGAL
             return self
-        accusation = MurderEvent(room, weapon, suspect)
 
-        self.accusation = accusation
+        self.accusation = MurderEvent(room, weapon, suspect)
         return self
 
     def check_accusation(self, casefile):
