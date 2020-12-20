@@ -3,23 +3,54 @@ from pytest import mark
 
 
 @mark.parametrize(
-    "from_room, room, suspect, weapon, result",
+    "from_state, room, suspect, weapon, result",
     [
-        ("Kitchen", "Lounge", "Colonel Mustard", "Rope", AccusationStatus.WRONG),
-        (None, "Hall", "Rev Green", "Rope", AccusationStatus.WRONG),
-        ("Bath", "Kitchen", "Rev Green", "Candlestick", AccusationStatus.CORRECT),
-        (None, "Kitchen", "Rev Green", "Candlestick", AccusationStatus.CORRECT),
+        (
+            AccusationStatus.ONROOM,
+            "Lounge",
+            "Colonel Mustard",
+            "Rope",
+            AccusationStatus.WRONG,
+        ),
+        (
+            AccusationStatus.ONROOM,
+            "Kitchen",
+            "Rev Green",
+            "Candlestick",
+            AccusationStatus.CORRECT,
+        ),
+        (
+            AccusationStatus.ONCORRIDOR,
+            "Lounge",
+            "Colonel Mustard",
+            "Rope",
+            AccusationStatus.WRONG,
+        ),
+        (
+            AccusationStatus.ONCORRIDOR,
+            "Kitchen",
+            "Rev Green",
+            "Candlestick",
+            AccusationStatus.CORRECT,
+        ),
+        (
+            AccusationStatus.WRONG,
+            "Kitchen",
+            "Rev Green",
+            "Candlestick",
+            AccusationStatus.ILLEGAL,
+        ),
     ],
 )
-def test_accuse(from_room, room, suspect, weapon, result):
+def test_accuse(from_state, room, suspect, weapon, result):
     """Tests winning and loosing accusations"""
 
     casefile = MurderEvent(room="Kitchen", suspect="Rev Green", weapon="Candlestick")
 
-    p1 = Player(room=from_room)
+    p1 = Player(state=from_state)
     p1.accuse(room, suspect, weapon).check_accusation(casefile)
 
-    assert p1.status == result
+    assert p1.state == result
 
 
 def test_suggestion():
