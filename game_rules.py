@@ -115,5 +115,11 @@ class RoomDoor:
 def has_shortcut(from_room, to_room):
     if (from_room, to_room) == ("Kitchen", "Study"):
         return True
+    if (from_room, to_room) == ("Study", "Kitchen"):
+        return True
+    if (from_room, to_room) == ("Lounge", "Conservatory"):
+        return True
+    if (from_room, to_room) == ("Conservatory", "Lounge"):
+        return True
     else:
         pass
