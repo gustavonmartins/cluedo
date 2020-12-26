@@ -36,3 +36,11 @@ def test_shortcut_invalid():
     p1 = Player(state=State.ONCORRIDOR, position="Kitchen")
     p1.enter_room("Attic")
     assert p1.state == State.ILLEGAL
+
+
+def test_leave_room():
+
+    p1 = Player(state=State.ONROOM, position="Kitchen")
+    p1.leave_room()
+    assert p1.state == State.ONCORRIDOR
+    assert p1.position == RoomDoor("Kitchen")

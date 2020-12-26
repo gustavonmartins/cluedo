@@ -26,11 +26,10 @@ class Player:
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
 
-    def __init__(self, state=State.ONCORRIDOR, room=None, cards=[], position=None):
+    def __init__(self, state=State.ONCORRIDOR, position=None, cards=[]):
         self.cards = set(cards)
         self.cards_to_check = {}
         self.last_card_refuted = None
-        self.room = room
         self.__hash = uuid4().int
         self.state = state
         self.position = position
@@ -73,7 +72,7 @@ class Player:
 
     def suggest(self, suspect, weapon):
         """Player suggesions can only relate to the room he is in"""
-        self.suggestion = MurderEvent(self.room, suspect, weapon)
+        self.suggestion = MurderEvent(self.position, suspect, weapon)
 
     def check_suggestion(self, other):
         suggestion_as_set = set(
@@ -97,14 +96,15 @@ class Player:
 
     @property
     def position(self):
-        if type(self._position) != RoomDoor:
-            return self._position
-        else:
-            pass
+        return self._position
 
     @position.setter
     def position(self, value):
         self._position = value
+
+    def leave_room(self):
+        self.state = State.ONCORRIDOR
+        self._position = RoomDoor("Kitchen")
 
 
 @dataclass

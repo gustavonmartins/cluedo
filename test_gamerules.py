@@ -38,7 +38,7 @@ def test_suggestion():
     """
 
     p1, p2, p3, p4 = (
-        Player(room="Lounge"),
+        Player(position="Lounge"),
         Player(),
         Player(),
         Player(),
