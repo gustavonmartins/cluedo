@@ -60,13 +60,13 @@ def test_suggestion():
     p4.confirm_check_suggestion(p1, "Rev Green")
     assert p1.last_card_refuted == "Rev Green"
 
-    p1.enter_room("Kitchen").suggest("Colonel Mustard", "Dagger")
+    p1.enter_room("Kitchen", strict=False).suggest("Colonel Mustard", "Dagger")
     p1.check_suggestion(p2)
     p2.confirm_check_suggestion(p1, "Dagger")
     assert p1.last_card_refuted == "Dagger"
 
-    p1.enter_room("Bathroom").suggest("Colonel Mustard", "Dagger")
-    p3.enter_room("Kitchen").suggest("Rev Green", "Pipe")
+    p1.enter_room("Bathroom", strict=False).suggest("Colonel Mustard", "Dagger")
+    p3.enter_room("Kitchen", strict=False).suggest("Rev Green", "Pipe")
     p3.check_suggestion(p2)
     p1.check_suggestion(p2)
     p2.confirm_check_suggestion(p1, "Dagger")

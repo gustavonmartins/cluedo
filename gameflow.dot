@@ -9,7 +9,7 @@ digraph {
 	E [label=looser]
 	A -> A [label="move with dice"]
     A -> C [label="enter room"]
-    I -> A
+    I -> A [label="receive cards"]
     C -> C [label="enter shortcut"]
     C -> B [label="suggest"]
     B -> C [label="confirm suggestion"]

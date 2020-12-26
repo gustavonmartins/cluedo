@@ -26,13 +26,14 @@ class Player:
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
 
-    def __init__(self, state=State.ONCORRIDOR, room=None, cards=[]):
+    def __init__(self, state=State.ONCORRIDOR, room=None, cards=[], position=None):
         self.cards = set(cards)
         self.cards_to_check = {}
         self.last_card_refuted = None
         self.room = room
         self.__hash = uuid4().int
         self.state = state
+        self.position = position
 
     def accuse(self, room, suspect, weapon):
         if not (self.state in [State.ONROOM, State.ONCORRIDOR]):
@@ -54,9 +55,20 @@ class Player:
     def receive_cards(self, cards):
         self.cards.update(cards)
 
-    def enter_room(self, room):
-        """This sets the room for suggestions"""
-        self.room = room
+    def enter_room(self, room, strict=True):
+        """This sets the room for suggestions.
+        Strict parameter controls pre conditions like being on rooms door or having a real shortcut
+        """
+        if self._position == RoomDoor(room) or strict == False:
+            self.room = room
+            self.position = room
+            self.state = State.ONROOM
+        elif has_shortcut(self._position, room):
+            self.room = room
+            self.position = room
+            self.state = State.ONROOM
+        else:
+            self.state = State.ILLEGAL
         return self
 
     def suggest(self, suspect, weapon):
@@ -82,3 +94,26 @@ class Player:
 
     def __hash__(self):
         return self.__hash
+
+    @property
+    def position(self):
+        if type(self._position) != RoomDoor:
+            return self._position
+        else:
+            pass
+
+    @position.setter
+    def position(self, value):
+        self._position = value
+
+
+@dataclass
+class RoomDoor:
+    room: str
+
+
+def has_shortcut(from_room, to_room):
+    if (from_room, to_room) == ("Kitchen", "Study"):
+        return True
+    else:
+        pass
