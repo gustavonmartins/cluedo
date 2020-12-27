@@ -26,13 +26,14 @@ class Player:
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
 
-    def __init__(self, state=State.ONCORRIDOR, position=None, cards=[]):
+    def __init__(self, state=State.ONCORRIDOR, position=None, cards=[], character=None):
         self.cards = set(cards)
         self.cards_to_check = {}
         self.last_card_refuted = None
         self.__hash = uuid4().int
         self.state = state
         self.position = position
+        self.character = character
 
     def accuse(self, room, suspect, weapon):
         if not (self.state in [State.ONROOM, State.ONCORRIDOR]):
@@ -105,6 +106,18 @@ class Player:
     def leave_room(self):
         self.state = State.ONCORRIDOR
         self._position = RoomDoor("Kitchen")
+
+    def start_initial_position(self):
+        posmap = {
+            "Mrs. Peacock": (1, 7),
+            "Mr. Green": (10, 1),
+            "Mrs. White": (15, 1),
+            "Prof. Plum": (1, 20),
+            "Miss Scarlett": (17, 25),
+            "Col. Mustard": (18, 24),
+        }
+        self.position = posmap[self.character]
+        self.state = State.ONCORRIDOR
 
 
 @dataclass
