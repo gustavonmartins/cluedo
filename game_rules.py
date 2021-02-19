@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from uuid import uuid4
 
 
@@ -7,9 +8,6 @@ class MurderEvent:
     room: str
     weapon: str
     suspect: str
-
-
-from enum import Enum
 
 
 class State(str, Enum):
@@ -59,7 +57,7 @@ class Player:
         """This sets the room for suggestions.
         Strict parameter controls pre conditions like being on rooms door or having a real shortcut
         """
-        if self._position == RoomDoor(room) or strict == False:
+        if self._position == RoomDoor(room) or (not strict):
             self.room = room
             self.position = room
             self.state = State.ONROOM
@@ -89,7 +87,7 @@ class Player:
             try:
                 self.cards_to_check[other].remove(card)
                 other.last_card_refuted = card
-            except KeyError as e:
+            except KeyError:
                 raise Exception("Tried to refute an irrefutable card")
 
     def __hash__(self):
