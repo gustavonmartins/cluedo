@@ -1,13 +1,13 @@
 from game_rules import MurderEvent, Player
-from pytest import fixture
+import pytest
 from conftest import load_json_data
 
 
 jsonpath = "test_data_accusation.json"
 
 
-@fixture(params=load_json_data(jsonpath))
-def testset(request):
+@pytest.fixture(name="testset", params=load_json_data(jsonpath))
+def fixture_testset(request):
     return request.param
 
 

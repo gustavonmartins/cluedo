@@ -24,14 +24,19 @@ class Player:
 
     It does not check pre-conditions of pawns position, whose turn ist, etc. Its very raw and unruled."""
 
-    def __init__(self, state=State.ONCORRIDOR, position=None, cards=[], character=None):
-        self.cards = set(cards)
+    def __init__(
+        self, state=State.ONCORRIDOR, position=None, cards=None, character=None
+    ):
+        self.cards = set(cards) if (cards is not None) else set([])
         self.cards_to_check = {}
         self.last_card_refuted = None
         self.__hash = uuid4().int
         self.state = state
         self.position = position
         self.character = character
+        self.accusation = None
+        self.suggestion = None
+        self.room = None
 
     def accuse(self, room, suspect, weapon):
         if not (self.state in [State.ONROOM, State.ONCORRIDOR]):
@@ -77,9 +82,9 @@ class Player:
         suggestion_as_set = set(
             [self.suggestion.room, self.suggestion.suspect, self.suggestion.weapon]
         )
-        other._receive_check_suggestion(self, suggestion_as_set)
+        other.receive_check_suggestion(self, suggestion_as_set)
 
-    def _receive_check_suggestion(self, other, suggestion):
+    def receive_check_suggestion(self, other, suggestion):
         self.cards_to_check[other] = suggestion.intersection(self.cards)
 
     def confirm_check_suggestion(self, other, card=None):
@@ -87,8 +92,8 @@ class Player:
             try:
                 self.cards_to_check[other].remove(card)
                 other.last_card_refuted = card
-            except KeyError:
-                raise Exception("Tried to refute an irrefutable card")
+            except KeyError as e:
+                raise Exception("Tried to refute an irrefutable card") from e
 
     def __hash__(self):
         return self.__hash
@@ -132,5 +137,4 @@ def has_shortcut(from_room, to_room):
         return True
     if (from_room, to_room) == ("Conservatory", "Lounge"):
         return True
-    else:
-        pass
+    return False
